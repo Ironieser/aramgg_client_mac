@@ -1,4 +1,6 @@
 name: Build Windows Release
+# 临时验证分支：仅用于在 fork 上验证 PR #20 的 Windows 打包与窗口 smoke，不合并。
+# 去掉官方通道与生产上传地址，不上传安装包产物。
 
 on:
   push:
@@ -21,8 +23,6 @@ jobs:
 
     env:
       CSC_IDENTITY_AUTO_DISCOVERY: 'false'
-      ARAMGG_DISTRIBUTION_CHANNEL: official
-      ARAMGG_MATCH_HISTORY_UPLOAD_ORIGIN: https://aramgg.com
 
     steps:
       - name: Checkout
@@ -120,15 +120,6 @@ jobs:
           if-no-files-found: warn
           path: build/release-smoke/
 
-      - name: Upload workflow artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: aramgg-client-windows
-          if-no-files-found: error
-          path: |
-            build/*.exe
-            build/*.exe.blockmap
-            build/latest.yml
 
       - name: Publish GitHub Release
         if: startsWith(github.ref, 'refs/tags/v')
